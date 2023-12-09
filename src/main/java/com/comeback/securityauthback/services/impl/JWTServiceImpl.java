@@ -41,6 +41,7 @@ public class JWTServiceImpl implements JWTService{
     }
 
     public String generateRefreshToken(Map<String, Object> extractClaims, UserDetails userDetails) {
+        System.out.println("aze");
         return Jwts.builder().setClaims(extractClaims).setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 684800000 ))
