@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -24,7 +25,12 @@ public class User  implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role ;
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Event> events;
+    @ManyToOne
+    SchoolClass schoolClass;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<Subject> subjects;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
