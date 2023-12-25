@@ -30,7 +30,19 @@ public class User  implements UserDetails {
     @ManyToOne
     SchoolClass schoolClass;
     @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_subject",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "subject_id")
+    )
+
     private Set<Subject> subjects;
+
+    public void incrementAllSubjectsAbsence() {
+        if (subjects != null) {
+            subjects.forEach(Subject::incrementAbsence);
+        }
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

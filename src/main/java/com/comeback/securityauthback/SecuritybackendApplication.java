@@ -21,6 +21,7 @@ import org.springframework.web.filter.CorsFilter;
 
 
 import java.util.Arrays;
+import java.util.List;
 
 @EnableScheduling
 @EnableAspectJAutoProxy
@@ -36,7 +37,7 @@ public class SecuritybackendApplication implements CommandLineRunner {
 	}
 
 	public void run(String... args){
-		User adminAccount = userRepository.findByRole(Role.ADMIN);
+		List<User> adminAccount = userRepository.findByRole(Role.ADMIN);
 		if(null == adminAccount){
 			User user =new User();
 

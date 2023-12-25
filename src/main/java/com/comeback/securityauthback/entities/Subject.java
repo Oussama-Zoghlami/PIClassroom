@@ -29,6 +29,11 @@ public class Subject {
     @ManyToMany(mappedBy = "subjects", cascade = CascadeType.ALL)
     private Set<User> users;
 
+    public void incrementAbsence() {
+        this.absence++;
+    }
+
+
 
 
 }
