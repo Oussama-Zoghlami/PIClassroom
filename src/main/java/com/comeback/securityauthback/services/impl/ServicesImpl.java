@@ -7,7 +7,6 @@ import com.comeback.securityauthback.entities.User;
 import com.comeback.securityauthback.repository.SchoolClassRepo;
 import com.comeback.securityauthback.repository.SubjectRepo;
 import com.comeback.securityauthback.repository.UserRepository;
-import com.comeback.securityauthback.repository.UserSubjectRepo;
 import com.comeback.securityauthback.services.Services;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,7 @@ public class ServicesImpl implements Services {
     SchoolClassRepo schoolClassRepo;
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    UserSubjectRepo userSubjectRepo;
+
     @Autowired
     SubjectRepo subjectRepo;
 
