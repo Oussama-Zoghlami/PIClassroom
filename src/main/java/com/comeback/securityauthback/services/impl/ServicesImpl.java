@@ -112,5 +112,15 @@ public class ServicesImpl implements Services {
         userRepository.save(user);
     }
 
+    @Override
+    public void affectSubjectClass(Integer idSubject, Integer idClass) {
+        SchoolClass s = schoolClassRepo.findById(idClass).get();
+        Subject c = subjectRepo.findById(idSubject).get();
+
+        c.setSchoolClass(s);
+        schoolClassRepo.save(s);
+
+    }
+
 
 }

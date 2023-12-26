@@ -18,6 +18,7 @@ public interface Services {
     public void deleteEvent(Long idEvent);
     public void affectUtilisateurClass (Integer idUser, Integer idClass);
     public void affectUtilisateurSubject (Integer idUser, Integer idSubject);
+    public void affectSubjectClass (Integer idSubject, Integer idClass);
 
 
 }

@@ -81,6 +81,11 @@ public class Controllers {
     public void affectUtilisateurSubject (@PathVariable Integer idUser,@PathVariable Integer idSubject){
         services.affectUtilisateurSubject(idUser,idSubject);
     }
+    @PreAuthorize("permitAll()")
+    @PutMapping("/affecterSubjectClass/{idSubject}/{idClass}")
+    public void affectSubjectClass (@PathVariable Integer idSubject,@PathVariable Integer idClass){
+        services.affectSubjectClass(idSubject,idClass);
+    }
 
 
 
