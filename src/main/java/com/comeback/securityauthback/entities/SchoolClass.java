@@ -1,10 +1,12 @@
 package com.comeback.securityauthback.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 @Entity
 @Data
@@ -22,8 +24,14 @@ public class SchoolClass {
     @Enumerated(EnumType.STRING)
     private Level level;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "schoolClass")
-    private Set<User> users;
+    @OneToMany(mappedBy = "schoolClass")
+    @JsonIgnore
+    private Set<User> users = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "schoolClass")
     private Set<Subject> subjects;
+
 }
+
+
+
+

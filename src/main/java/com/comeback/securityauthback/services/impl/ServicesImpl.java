@@ -1,9 +1,7 @@
 package com.comeback.securityauthback.services.impl;
 
-import com.comeback.securityauthback.entities.Role;
-import com.comeback.securityauthback.entities.SchoolClass;
-import com.comeback.securityauthback.entities.Subject;
-import com.comeback.securityauthback.entities.User;
+import com.comeback.securityauthback.entities.*;
+import com.comeback.securityauthback.repository.EventRepo;
 import com.comeback.securityauthback.repository.SchoolClassRepo;
 import com.comeback.securityauthback.repository.SubjectRepo;
 import com.comeback.securityauthback.repository.UserRepository;
@@ -25,6 +23,8 @@ public class ServicesImpl implements Services {
 
     @Autowired
     SubjectRepo subjectRepo;
+    @Autowired
+    EventRepo eventRepo;
 
 
 
@@ -32,6 +32,17 @@ public class ServicesImpl implements Services {
     @Override
     public SchoolClass addClass(SchoolClass schoolClass) {
         return schoolClassRepo.save(schoolClass);
+    }
+
+    @Override
+    public SchoolClass affichClass(Integer idClass) {
+        return schoolClassRepo.findById(idClass).orElse(null);
+    }
+
+    @Override
+    public void deleteClass(Integer idClass) {
+        schoolClassRepo.deleteById(idClass);
+
     }
 
     @Override
@@ -60,6 +71,45 @@ public class ServicesImpl implements Services {
     @Override
     public Subject addSubject(Subject subject) {
         return subjectRepo.save(subject);
+    }
+
+
+
+    @Override
+    public Event addEvent(Event event) {
+        return eventRepo.save(event);
+    }
+
+    @Override
+    public Event affichEvent(Long idEvent) {
+        return eventRepo.findById(idEvent).orElse(null);
+    }
+
+    @Override
+    public void deleteEvent(Long idEvent) {
+        eventRepo.deleteById(idEvent);
+
+    }
+
+    @Override
+    public void affectUtilisateurClass(Integer idUser, Integer idClass) {
+        User u = userRepository.findById(idUser).get();
+        SchoolClass c = schoolClassRepo.findById(idClass).get();
+
+        u.setSchoolClass(c);
+        userRepository.save(u);
+
+
+    }
+
+    @Override
+    public void affectUtilisateurSubject(Integer idUser, Integer idSubject) {
+        User user = userRepository.findById(idUser).orElseThrow(() -> new EntityNotFoundException("User not found with id: " + idUser));
+        Subject subject = subjectRepo.findById(idSubject).orElseThrow(() -> new EntityNotFoundException("Subject not found with id: " + idSubject));
+
+        // Assuming that the relationship between User and Subject is Many-to-Many
+        user.getSubjects().add(subject);
+        userRepository.save(user);
     }
 
 

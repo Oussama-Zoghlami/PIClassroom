@@ -1,5 +1,6 @@
 package com.comeback.securityauthback.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +28,7 @@ public class User  implements UserDetails {
     private Role role ;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Event> events;
+    @JsonIgnore
     @ManyToOne
     SchoolClass schoolClass;
     @ManyToMany(cascade = CascadeType.ALL)
