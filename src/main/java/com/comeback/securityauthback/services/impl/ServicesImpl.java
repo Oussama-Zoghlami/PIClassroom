@@ -122,5 +122,20 @@ public class ServicesImpl implements Services {
 
     }
 
+    @Override
+    public Event updateEvent(Event event) {
+        return eventRepo.save(event);
+    }
+
+    @Override
+    public SchoolClass updateClass(SchoolClass schoolClass) {
+        return schoolClassRepo.save(schoolClass);
+    }
+
+    @Override
+    public Subject updateSubject(Subject subject) {
+        return subjectRepo.save(subject);
+    }
+
 
 }

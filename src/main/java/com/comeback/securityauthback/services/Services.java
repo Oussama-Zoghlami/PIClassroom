@@ -19,6 +19,8 @@ public interface Services {
     public void affectUtilisateurClass (Integer idUser, Integer idClass);
     public void affectUtilisateurSubject (Integer idUser, Integer idSubject);
     public void affectSubjectClass (Integer idSubject, Integer idClass);
-
+    public Event updateEvent(Event event);
+    public SchoolClass updateClass(SchoolClass schoolClass);
+    public Subject updateSubject(Subject subject);
 
 }

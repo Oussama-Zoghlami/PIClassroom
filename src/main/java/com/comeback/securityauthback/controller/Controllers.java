@@ -86,6 +86,24 @@ public class Controllers {
     public void affectSubjectClass (@PathVariable Integer idSubject,@PathVariable Integer idClass){
         services.affectSubjectClass(idSubject,idClass);
     }
+    @PreAuthorize("permitAll()")
+    @PutMapping("/updateEvent")
+    public Event updateEvent(@RequestBody Event event){
+        Event e=services.updateEvent(event);
+        return e;
+    }
+    @PreAuthorize("permitAll()")
+    @PutMapping("/updateClass")
+    public SchoolClass updateClass(@RequestBody SchoolClass schoolClass){
+        SchoolClass s = services.updateClass(schoolClass);
+                return s;
+    }
+    @PreAuthorize("permitAll()")
+    @PutMapping("/updateSubject")
+    public Subject updateSubject(@RequestBody Subject subject){
+        Subject s = services.updateSubject(subject);
+        return s;
+    }
 
 
 
