@@ -2,6 +2,7 @@ package com.comeback.securityauthback.controller;
 
 import com.comeback.securityauthback.entities.*;
 import com.comeback.securityauthback.services.Services;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
 
@@ -9,6 +10,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
@@ -29,11 +32,7 @@ public class Controllers {
     public List<User> getUsersByRole(@PathVariable Role role) {
         return services.getUsersByRole(role);
     }
-    @PreAuthorize("permitAll()")
-    @PostMapping("/addAbsence/{userId}")
-    public void addAbsenceToUser(@PathVariable Integer userId) {
-        services.addAbsenceToUser(userId);
-    }
+
     @PreAuthorize("permitAll()")
     @PostMapping("/addsubject")
     public Subject addSubject(@RequestBody Subject subject){
@@ -104,6 +103,29 @@ public class Controllers {
         Subject s = services.updateSubject(subject);
         return s;
     }
+    @PreAuthorize("permitAll()")
+    @PostMapping("/addAbsence/{userId}")
+    public void addAbsenceToUser(@PathVariable Integer userId,@RequestParam Integer subjectId) {
+        services.addAbsenceToUser(userId,subjectId);
+    }
+    @PreAuthorize("permitAll()")
+    @GetMapping("/displayUser/{userId}")
+    public Map<String, Object> displayUser(@PathVariable Integer userId) {
+        User user = services.findUserById(userId);
+        if (user != null) {
+            Map<String, Object> userData = Map.of(
+                    "user", user,
+                    "subjects", user.getSubjects(),
+                    "absences", user.getSubjects().stream()
+                            .collect(Collectors.toMap(Subject::getIdSubject, Subject::getAbsence))
+            );
+            return userData;
+        } else {
+            throw new EntityNotFoundException("User not found with ID: " + userId);
+        }
+    }
+
+
 
 
 

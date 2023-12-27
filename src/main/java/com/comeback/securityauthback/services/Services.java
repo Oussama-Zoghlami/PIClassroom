@@ -10,7 +10,7 @@ public interface Services {
     public void deleteClass(Integer idClass);
     List<User> getUsersByRole(Role role);
 
-    void addAbsenceToUser(Integer userId);
+
     public Subject addSubject(Subject subject);
 
     public Event addEvent(Event event);
@@ -22,5 +22,10 @@ public interface Services {
     public Event updateEvent(Event event);
     public SchoolClass updateClass(SchoolClass schoolClass);
     public Subject updateSubject(Subject subject);
+
+    void addAbsenceToUser(Integer userId, Integer idSubject);
+    User findUserById(Integer userId);
+
+    public void displayAbsencesAndSubjects(Integer userId);
 
 }

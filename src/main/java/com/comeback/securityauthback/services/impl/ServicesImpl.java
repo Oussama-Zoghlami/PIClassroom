@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ServicesImpl implements Services {
@@ -50,23 +51,7 @@ public class ServicesImpl implements Services {
         return userRepository.findByRole(role);
     }
 
-    @Override
-    public void addAbsenceToUser(Integer userId) {
-        //  Retrieve the user from the database
-        Optional<User> userOptional = userRepository.findById(userId);
 
-        //  Check if the user exists and update the absence
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.incrementAllSubjectsAbsence(); // Assuming you have a method to increment absence in the User class
-
-            //  Save the updated user back to the database
-            userRepository.save(user);
-        } else {
-            // Handle the case where the user with the given ID is not found
-            throw new EntityNotFoundException("User not found with ID: " + userId);
-        }
-    }
 
     @Override
     public Subject addSubject(Subject subject) {
@@ -136,6 +121,56 @@ public class ServicesImpl implements Services {
     public Subject updateSubject(Subject subject) {
         return subjectRepo.save(subject);
     }
+    @Override
+    public User findUserById(Integer userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
+    }
+    @Override
+    public void addAbsenceToUser(Integer userId, Integer idSubject) {
+        // Retrieve the user from the database
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        // Check if the user exists
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            // Increment the absence for the specific subject
+            user.incrementSubjectAbsence(idSubject); // Assuming you have a method in the User class for this
+
+            // Save the updated user back to the database
+            userRepository.save(user);
+        } else {
+            // Handle the case where the user with the given ID is not found
+            throw new EntityNotFoundException("User not found with ID: " + userId);
+        }
+    }
+    @Override
+    public void displayAbsencesAndSubjects(Integer userId) {
+        // Retrieve the user from the database
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        // Check if the user exists
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            // Get the set of subjects associated with the user
+            Set<Subject> subjects = user.getSubjects();
+
+            // Print the user's name
+            System.out.println("User: " + user.getFirstname() + " " + user.getLastname());
+
+            // Iterate through the subjects and display absences and names
+            for (Subject subject : subjects) {
+                System.out.println("Subject: " + subject.getTitle() + ", Absences: " + subject.getAbsence());
+            }
+        } else {
+            // Handle the case where the user with the given ID is not found
+            throw new EntityNotFoundException("User not found with ID: " + userId);
+        }
+    }
+
+
 
 
 }

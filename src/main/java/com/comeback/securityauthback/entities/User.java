@@ -34,11 +34,17 @@ public class User  implements UserDetails {
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Subject> subjects;
 
-    public void incrementAllSubjectsAbsence() {
-        if (subjects != null) {
-            subjects.forEach(Subject::incrementAbsence);
-        }
+    public void incrementSubjectAbsence(Integer idSubject) {
+        // Find the subject by ID
+        Subject subject = subjects.stream()
+                .filter(s -> s.getIdSubject().equals(idSubject))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Subject not found with ID: " + idSubject));
+
+        // Increment the absence for the specific subject
+        subject.incrementAbsence();
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
