@@ -169,6 +169,10 @@ public class ServicesImpl implements Services {
             throw new EntityNotFoundException("User not found with ID: " + userId);
         }
     }
+    @Override
+    public Subject getSubjectDetailsById(Integer idSubject) {
+        return subjectRepo.findById(idSubject).orElse(null);
+    }
 
 
 

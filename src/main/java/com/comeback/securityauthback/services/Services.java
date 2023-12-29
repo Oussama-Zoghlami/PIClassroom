@@ -27,5 +27,6 @@ public interface Services {
     User findUserById(Integer userId);
 
     public void displayAbsencesAndSubjects(Integer userId);
+    public Subject getSubjectDetailsById(Integer idSubject);
 
 }

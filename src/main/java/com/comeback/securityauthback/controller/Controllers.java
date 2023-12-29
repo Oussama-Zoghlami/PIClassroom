@@ -6,6 +6,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -122,6 +124,17 @@ public class Controllers {
             return userData;
         } else {
             throw new EntityNotFoundException("User not found with ID: " + userId);
+        }
+    }
+    @PreAuthorize("permitAll()")
+    @GetMapping("affichersubject/{idUser}/{idSubject}")
+    public ResponseEntity<Subject> getSubjectDetails(@PathVariable Integer userId, @PathVariable Integer idSubject) {
+        Subject subject = services.getSubjectDetailsById(idSubject);
+
+        if (subject != null) {
+            return new ResponseEntity<>(subject, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
