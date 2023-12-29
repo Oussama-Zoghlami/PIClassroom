@@ -104,8 +104,8 @@ public class Controllers {
         return s;
     }
     @PreAuthorize("permitAll()")
-    @PostMapping("/addAbsence/{userId}")
-    public void addAbsenceToUser(@PathVariable Integer userId,@RequestParam Integer subjectId) {
+    @PostMapping("/addAbsence/{userId}/{subjectId}")
+    public void addAbsenceToUser(@PathVariable Integer userId,@PathVariable Integer subjectId) {
         services.addAbsenceToUser(userId,subjectId);
     }
     @PreAuthorize("permitAll()")
