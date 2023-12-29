@@ -28,5 +28,6 @@ public interface Services {
 
     public void displayAbsencesAndSubjects(Integer userId);
     public Subject getSubjectDetailsById(Integer idSubject);
-
+    List<User> getUsersByClassId(Integer classId);
+    List<String> getUsersByClassRole(Role role, Integer classId);
 }

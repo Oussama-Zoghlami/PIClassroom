@@ -9,10 +9,8 @@ import com.comeback.securityauthback.services.Services;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ServicesImpl implements Services {
@@ -173,8 +171,28 @@ public class ServicesImpl implements Services {
     public Subject getSubjectDetailsById(Integer idSubject) {
         return subjectRepo.findById(idSubject).orElse(null);
     }
+    @Override
+    public List<User> getUsersByClassId(Integer classId) {
+        return userRepository.findBySchoolClass_IdClass(classId);
+    }
+    @Override
+    public List<String> getUsersByClassRole(Role role, Integer classId) {
+        SchoolClass schoolClass = schoolClassRepo.findById(classId).orElse(null);
+        if (schoolClass == null) {
+            // Handle the case where the class is not found, you might want to throw an exception or return an empty list
+            return Collections.emptyList();
+        }
 
+        List<String> result = new ArrayList<>();
+        for (User user : userRepository.findBySchoolClass_IdClass(classId)) {
+            if (user.getRole() == role) {
+                // Assuming 'role' is an Enum, adjust the condition accordingly
+                result.add(user.getFirstname() + " " + user.getLastname() + " - " + user.getEmail() + " (" + user.getRole() + ")");
+            }
+        }
 
+        return result;
+    }
 
 
 }

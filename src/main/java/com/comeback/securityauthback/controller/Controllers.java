@@ -112,18 +112,12 @@ public class Controllers {
     }
     @PreAuthorize("permitAll()")
     @GetMapping("/displayUser/{userId}")
-    public Map<String, Object> displayUser(@PathVariable Integer userId) {
+    public ResponseEntity<User> displayUser(@PathVariable Integer userId) {
         User user = services.findUserById(userId);
         if (user != null) {
-            Map<String, Object> userData = Map.of(
-                    "user", user,
-                    "subjects", user.getSubjects(),
-                    "absences", user.getSubjects().stream()
-                            .collect(Collectors.toMap(Subject::getIdSubject, Subject::getAbsence))
-            );
-            return userData;
+            return ResponseEntity.ok(user);
         } else {
-            throw new EntityNotFoundException("User not found with ID: " + userId);
+            return ResponseEntity.notFound().build();
         }
     }
     @PreAuthorize("permitAll()")
@@ -137,9 +131,26 @@ public class Controllers {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-
-
-
+    @PreAuthorize("permitAll()")
+    @GetMapping("/byClass/{classId}")
+    public ResponseEntity<List<User>> getUsersByClassId(@PathVariable Integer classId) {
+        List<User> users = services.getUsersByClassId(classId);
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+    @PreAuthorize("permitAll()")
+    @GetMapping("/byClassRole")
+    public ResponseEntity<List<String>> getUsersByClassRole(
+            @RequestParam(required = true) Role role,
+            @RequestParam(required = true) Integer classId
+    ) {
+        List<String> users;
+        try {
+            users = services.getUsersByClassRole(role, classId);
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (Exception e) {
+            // Handle exceptions or invalid input
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }
