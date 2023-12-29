@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface SubjectRepo extends JpaRepository<Subject,Integer> {
-    List<Subject> findBySchoolClass(Integer classId);
+    List<Subject> findBySchoolClass_IdClass(Integer classId);
 }

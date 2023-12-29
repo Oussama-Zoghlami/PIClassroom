@@ -177,7 +177,7 @@ public class ServicesImpl implements Services {
     }
     @Override
     public List<Subject> getSubjectByClassId(Integer classId) {
-        return subjectRepo.findBySchoolClass(classId);
+        return subjectRepo.findBySchoolClass_IdClass(classId);
     }
 
     @Override
