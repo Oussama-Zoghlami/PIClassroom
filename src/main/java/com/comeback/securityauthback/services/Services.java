@@ -30,4 +30,5 @@ public interface Services {
     public Subject getSubjectDetailsById(Integer idSubject);
     List<User> getUsersByClassId(Integer classId);
     List<String> getUsersByClassRole(Role role, Integer classId);
+    List<Subject> getSubjectByClassId(Integer classId);
 }

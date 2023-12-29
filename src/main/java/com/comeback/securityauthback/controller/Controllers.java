@@ -138,6 +138,12 @@ public class Controllers {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
     @PreAuthorize("permitAll()")
+    @GetMapping("/byClassSubject/{classId}")
+    public ResponseEntity<List<Subject>> getSubjectByClassId(@PathVariable Integer classId) {
+        List<Subject> subjects = services.getSubjectByClassId(classId);
+        return new ResponseEntity<>(subjects, HttpStatus.OK);
+    }
+    @PreAuthorize("permitAll()")
     @GetMapping("/byClassRole")
     public ResponseEntity<List<String>> getUsersByClassRole(
             @RequestParam(required = true) Role role,

@@ -176,6 +176,11 @@ public class ServicesImpl implements Services {
         return userRepository.findBySchoolClass_IdClass(classId);
     }
     @Override
+    public List<Subject> getSubjectByClassId(Integer classId) {
+        return subjectRepo.findBySchoolClass(classId);
+    }
+
+    @Override
     public List<String> getUsersByClassRole(Role role, Integer classId) {
         SchoolClass schoolClass = schoolClassRepo.findById(classId).orElse(null);
         if (schoolClass == null) {
@@ -193,6 +198,7 @@ public class ServicesImpl implements Services {
 
         return result;
     }
+
 
 
 }
