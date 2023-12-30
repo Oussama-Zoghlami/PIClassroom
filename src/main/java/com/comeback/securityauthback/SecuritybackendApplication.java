@@ -38,7 +38,7 @@ public class SecuritybackendApplication implements CommandLineRunner {
 
 	public void run(String... args){
 		List<User> adminAccount = userRepository.findByRole(Role.ADMIN);
-		if(null == adminAccount){
+		if(adminAccount.isEmpty()){
 			User user =new User();
 
 			user.setEmail("admin@gmail.com");

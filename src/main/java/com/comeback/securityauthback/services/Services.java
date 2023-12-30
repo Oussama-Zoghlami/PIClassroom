@@ -23,12 +23,17 @@ public interface Services {
     public SchoolClass updateClass(SchoolClass schoolClass);
     public Subject updateSubject(Subject subject);
 
-    void addAbsenceToUser(Integer userId, Integer idSubject);
+
     User findUserById(Integer userId);
 
-    public void displayAbsencesAndSubjects(Integer userId);
+
     public Subject getSubjectDetailsById(Integer idSubject);
     List<User> getUsersByClassId(Integer classId);
     List<String> getUsersByClassRole(Role role, Integer classId);
     List<Subject> getSubjectByClassId(Integer classId);
+    public void addNoteWithParams(Long userId, Integer subjectId, Double noteValue);
+    public List<Note> listeNote(Integer userId ,Integer subjectId);
+
+
+
 }

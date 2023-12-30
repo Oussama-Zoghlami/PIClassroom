@@ -19,19 +19,15 @@ public class Subject {
     private Integer idSubject;
     @Column(name = "title_subject")
     private String title;
-    @Column(name = "note_subject")
-    private Double note;
-    @Column(name = "absence_subject")
-    private Integer absence;
+
 
     @ManyToOne
     SchoolClass schoolClass;
     @ManyToMany(mappedBy = "subjects", cascade = CascadeType.ALL)
     private Set<User> users;
+    @OneToMany(mappedBy = "subject")
+    private Set<Note> notes;
 
-    public void incrementAbsence() {
-        this.absence++;
-    }
 
 
 

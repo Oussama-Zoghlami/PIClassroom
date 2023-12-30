@@ -1,16 +1,14 @@
 package com.comeback.securityauthback.services.impl;
 
 import com.comeback.securityauthback.entities.*;
-import com.comeback.securityauthback.repository.EventRepo;
-import com.comeback.securityauthback.repository.SchoolClassRepo;
-import com.comeback.securityauthback.repository.SubjectRepo;
-import com.comeback.securityauthback.repository.UserRepository;
+import com.comeback.securityauthback.repository.*;
 import com.comeback.securityauthback.services.Services;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ServicesImpl implements Services {
@@ -24,6 +22,8 @@ public class ServicesImpl implements Services {
     SubjectRepo subjectRepo;
     @Autowired
     EventRepo eventRepo;
+    @Autowired
+    NoteRepo noteRepo ;
 
 
 
@@ -124,49 +124,8 @@ public class ServicesImpl implements Services {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
     }
-    @Override
-    public void addAbsenceToUser(Integer userId, Integer idSubject) {
-        // Retrieve the user from the database
-        Optional<User> userOptional = userRepository.findById(userId);
 
-        // Check if the user exists
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
 
-            // Increment the absence for the specific subject
-            user.incrementSubjectAbsence(idSubject); // Assuming you have a method in the User class for this
-
-            // Save the updated user back to the database
-            userRepository.save(user);
-        } else {
-            // Handle the case where the user with the given ID is not found
-            throw new EntityNotFoundException("User not found with ID: " + userId);
-        }
-    }
-    @Override
-    public void displayAbsencesAndSubjects(Integer userId) {
-        // Retrieve the user from the database
-        Optional<User> userOptional = userRepository.findById(userId);
-
-        // Check if the user exists
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-
-            // Get the set of subjects associated with the user
-            Set<Subject> subjects = user.getSubjects();
-
-            // Print the user's name
-            System.out.println("User: " + user.getFirstname() + " " + user.getLastname());
-
-            // Iterate through the subjects and display absences and names
-            for (Subject subject : subjects) {
-                System.out.println("Subject: " + subject.getTitle() + ", Absences: " + subject.getAbsence());
-            }
-        } else {
-            // Handle the case where the user with the given ID is not found
-            throw new EntityNotFoundException("User not found with ID: " + userId);
-        }
-    }
     @Override
     public Subject getSubjectDetailsById(Integer idSubject) {
         return subjectRepo.findById(idSubject).orElse(null);
@@ -198,6 +157,41 @@ public class ServicesImpl implements Services {
 
         return result;
     }
+    @Override
+    public void addNoteWithParams(Long userId, Integer subjectId, Double noteValue) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Subject subject = subjectRepo.findById(subjectId)
+                .orElseThrow(() -> new RuntimeException("Subject not found"));
+
+        Note note = new Note();
+        note.setUser(user);
+        note.setSubject(subject);
+        note.setValue(noteValue);
+        noteRepo.save(note);
+    }
+
+    @Override
+    public List<Note> listeNote(Integer userId, Integer subjectId) {
+        User user = userRepository.findById(userId).orElse(null);
+        Subject subject = subjectRepo.findById(subjectId).orElse(null);
+
+        if (user == null || subject == null) {
+            // Handle the case where the user or subject is not found
+            return Collections.emptyList();
+        }
+
+        return noteRepo.findAll()
+                .stream()
+                .filter(note -> note.getUser().equals(user) && note.getSubject().equals(subject))
+                .collect(Collectors.toList());
+    }
+
+
+
+
+
+
 
 
 

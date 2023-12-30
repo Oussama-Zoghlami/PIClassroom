@@ -33,17 +33,9 @@ public class User  implements UserDetails {
     SchoolClass schoolClass;
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<Subject> subjects;
+    @OneToMany(mappedBy = "user")
+    private Set<Note> notes;
 
-    public void incrementSubjectAbsence(Integer idSubject) {
-        // Find the subject by ID
-        Subject subject = subjects.stream()
-                .filter(s -> s.getIdSubject().equals(idSubject))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException("Subject not found with ID: " + idSubject));
-
-        // Increment the absence for the specific subject
-        subject.incrementAbsence();
-    }
 
 
     @Override

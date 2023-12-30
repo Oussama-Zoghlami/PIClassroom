@@ -105,11 +105,7 @@ public class Controllers {
         Subject s = services.updateSubject(subject);
         return s;
     }
-    @PreAuthorize("permitAll()")
-    @PostMapping("/addAbsence/{userId}/{subjectId}")
-    public void addAbsenceToUser(@PathVariable Integer userId,@PathVariable Integer subjectId) {
-        services.addAbsenceToUser(userId,subjectId);
-    }
+
     @PreAuthorize("permitAll()")
     @GetMapping("/displayUser/{userId}")
     public ResponseEntity<User> displayUser(@PathVariable Integer userId) {
@@ -158,5 +154,27 @@ public class Controllers {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    @PreAuthorize("permitAll()")
+    @PostMapping("/addNote/{userId}/{subjectId}/{noteValue}")
+    public ResponseEntity<Void> addNoteWithParams(
+            @PathVariable Long userId,
+            @PathVariable Integer subjectId,
+            @PathVariable Double noteValue) {
+        services.addNoteWithParams(userId, subjectId, noteValue);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    @GetMapping("/list/{userId}/{subjectId}")
+    public ResponseEntity<List<Note>> listNotes(@PathVariable Integer userId, @PathVariable Integer subjectId) {
+        List<Note> notes = services.listeNote(userId, subjectId);
+
+        if (notes.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Or HttpStatus.NO_CONTENT, depending on your use case
+        }
+
+        return new ResponseEntity<>(notes, HttpStatus.OK);
+    }
+
+
+
 
 }
