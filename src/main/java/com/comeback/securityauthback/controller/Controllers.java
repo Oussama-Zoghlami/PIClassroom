@@ -163,6 +163,7 @@ public class Controllers {
         services.addNoteWithParams(userId, subjectId, noteValue);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+    @PreAuthorize("permitAll()")
     @GetMapping("/list/{userId}/{subjectId}")
     public ResponseEntity<List<Note>> listNotes(@PathVariable Integer userId, @PathVariable Integer subjectId) {
         List<Note> notes = services.listeNote(userId, subjectId);
